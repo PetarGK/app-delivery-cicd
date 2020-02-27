@@ -78,6 +78,7 @@ export class PipelineStack extends cdk.Stack {
 
 
     const selfUpdateAction = new PipelineDeployStackAction({
+      changeSetName: 'selfUpdate',
       stack: this,
       input: synthesizedApp,
       adminPermissions: true,
