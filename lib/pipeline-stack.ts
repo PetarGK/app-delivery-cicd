@@ -16,6 +16,7 @@ export class PipelineStack extends cdk.Stack {
 
     
     const pipeline = new codepipeline.Pipeline(this, 'AppDeliveryPipeline', {
+      pipelineName: 'app-delivery-cicd',
       restartExecutionOnUpdate: true
     });
 
@@ -74,7 +75,7 @@ export class PipelineStack extends cdk.Stack {
       stageName: 'Build',
       actions: [buildAction],
     })
-    
+
 
     const selfUpdateAction = new cicd.PipelineDeployStackAction({
       stack: this,
@@ -88,20 +89,22 @@ export class PipelineStack extends cdk.Stack {
 
 
     const usersServiceAction = new cicd.PipelineDeployStackAction({
+      changeSetName: 'usersService',
       stack: props.usersStack,
       input: synthesizedApp,
       adminPermissions: true,
     })
-
+/*
     const notificationsServiceAction = new cicd.PipelineDeployStackAction({
+      changeSetName: 'notificationsService',
       stack: props.notificationsStack,
       input: synthesizedApp,
       adminPermissions: true,
     })    
-
+*/
     pipeline.addStage({
       stageName: 'Deploy',
-      actions: [usersServiceAction, notificationsServiceAction],
+      actions: [usersServiceAction/*, notificationsServiceAction*/],
     })
   }
 }
