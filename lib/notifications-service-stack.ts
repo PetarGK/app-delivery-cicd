@@ -6,7 +6,7 @@ export class NotificationsServiceStack extends cdk.Stack {
       super(scope, id, props);
   
       const topic = new sns.Topic(this, 'NotificationsTopic', {
-        displayName: 'Push notifications topic'
+        displayName: 'Push notifications topic 2'
       }); 
 
     }
