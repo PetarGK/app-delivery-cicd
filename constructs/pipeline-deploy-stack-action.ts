@@ -101,12 +101,6 @@ export class PipelineDeployStackAction implements codepipeline.IAction {
 
   constructor(props: PipelineDeployStackActionProps) {
     this.stack = props.stack;
-    const assets = this.stack.node.metadata.filter(md => md.type === cxapi.ASSET_METADATA);
-    if (assets.length > 0) {
-      // FIXME: Implement the necessary actions to publish assets
-      throw new Error(`Cannot deploy the stack ${this.stack.stackName} because it references ${assets.length} asset(s)`);
-    }
-
     const createChangeSetRunOrder = props.createChangeSetRunOrder || 1;
     const executeChangeSetRunOrder = props.executeChangeSetRunOrder || (createChangeSetRunOrder + 1);
     if (createChangeSetRunOrder >= executeChangeSetRunOrder) {
