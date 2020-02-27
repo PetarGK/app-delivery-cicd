@@ -21,7 +21,6 @@
     "typescript": "~3.7.2"
   },
   "dependencies": {
-    "@aws-cdk/app-delivery": "^1.26.0",
     "@aws-cdk/aws-codebuild": "^1.26.0",
     "@aws-cdk/aws-codepipeline": "^1.26.0",
     "@aws-cdk/aws-codepipeline-actions": "^1.26.0",

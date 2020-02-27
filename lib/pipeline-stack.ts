@@ -2,8 +2,8 @@ import * as cdk from '@aws-cdk/core';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
-import * as cicd from '@aws-cdk/app-delivery';
 import * as ssm from '@aws-cdk/aws-ssm'
+import { PipelineDeployStackAction } from '../constructs/pipeline-deploy-stack-action';
 
 interface PipelineStackProps extends cdk.StackProps {
   usersStack: cdk.Stack,
@@ -77,7 +77,7 @@ export class PipelineStack extends cdk.Stack {
     })
 
 
-    const selfUpdateAction = new cicd.PipelineDeployStackAction({
+    const selfUpdateAction = new PipelineDeployStackAction({
       stack: this,
       input: synthesizedApp,
       adminPermissions: true,
@@ -88,23 +88,24 @@ export class PipelineStack extends cdk.Stack {
     })
 
 
-    const usersServiceAction = new cicd.PipelineDeployStackAction({
+    const usersServiceAction = new PipelineDeployStackAction({
       changeSetName: 'usersService',
       stack: props.usersStack,
       input: synthesizedApp,
       adminPermissions: true,
     })
-/*
-    const notificationsServiceAction = new cicd.PipelineDeployStackAction({
+    
+
+    const notificationsServiceAction = new PipelineDeployStackAction({
       changeSetName: 'notificationsService',
       stack: props.notificationsStack,
       input: synthesizedApp,
       adminPermissions: true,
     })    
-*/
+
     pipeline.addStage({
       stageName: 'Deploy',
-      actions: [usersServiceAction/*, notificationsServiceAction*/],
+      actions: [usersServiceAction, notificationsServiceAction],
     })
   }
 }
