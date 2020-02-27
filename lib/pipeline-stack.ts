@@ -3,6 +3,9 @@ import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import * as ssm from '@aws-cdk/aws-ssm'
+import * as targets from '@aws-cdk/aws-events-targets';
+import * as sns from '@aws-cdk/aws-sns';
+import * as events from '@aws-cdk/aws-events';
 import { PipelineDeployStackAction } from '../constructs/pipeline-deploy-stack-action';
 
 interface PipelineStackProps extends cdk.StackProps {
@@ -107,6 +110,16 @@ export class PipelineStack extends cdk.Stack {
     pipeline.addStage({
       stageName: 'Deploy',
       actions: [usersServiceAction, notificationsServiceAction],
+    })
+
+    const pipelineNotificationsTopic = new sns.Topic(this, 'PipelineNotifications');
+    const eventPipeline = events.EventField.fromPath('$.detail.pipeline');
+    const eventState = events.EventField.fromPath('$.detail.state');
+
+    pipeline.onStateChange('OnPipelineStateChange', {
+      target: new targets.SnsTopic(pipelineNotificationsTopic, {
+        message: events.RuleTargetInput.fromText(`Pipeline ${eventPipeline} changed state to ${eventState}`),
+      })
     })
   }
 }
