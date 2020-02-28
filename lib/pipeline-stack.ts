@@ -107,9 +107,16 @@ export class PipelineStack extends cdk.Stack {
       adminPermissions: true,
     })    
 
+    const manualApprovalAction = new codepipeline_actions.ManualApprovalAction({
+      actionName: 'Approve',
+      notifyEmails: [
+        'petar.korudzhiev@mentormate.com',
+      ]
+    })
+
     const deployStage = pipeline.addStage({
       stageName: 'Deploy',
-      actions: [usersServiceAction, notificationsServiceAction],
+      actions: [manualApprovalAction, usersServiceAction, notificationsServiceAction],
     })
 
     const pipelineNotificationsTopic = new sns.Topic(this, 'PipelineNotifications');

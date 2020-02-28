@@ -10,5 +10,9 @@ export class NotificationsServiceStack extends cdk.Stack {
         displayName: 'Customer subscription topic'
       })
 
+      const topic2 = new sns.Topic(this, 'Topic2', {
+        displayName: 'Customer subscription topic 2'
+      })
+
     }
 } 
