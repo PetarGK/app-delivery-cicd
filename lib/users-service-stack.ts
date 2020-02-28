@@ -1,18 +1,16 @@
 import * as cdk from '@aws-cdk/core';
-import { NodejsFunction } from '@aws-cdk/aws-lambda-nodejs'
-import { Runtime } from '@aws-cdk/aws-lambda';
+import * as sam from '@aws-cdk/aws-sam';
 
 export class UsersServiceStack extends cdk.Stack {
     constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
       super(scope, id, props);
 
       
-  
-      const getUsersLambda = new NodejsFunction(this, 'get-users', {
-        entry: 'src/users-service/get-users/lambda.ts',
-        runtime: Runtime.NODEJS_12_X,
-        memorySize: 512,
-        minify: true
+      const myApp = new sam.CfnApplication(this, 'MyFirstApp', {
+        location: {
+          applicationId: 'arn:aws:serverlessrepo:us-east-1:009834006932:applications/sam-application-example',
+          semanticVersion: '0.0.1'
+        }
       })
 
     }

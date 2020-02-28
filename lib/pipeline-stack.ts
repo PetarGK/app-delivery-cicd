@@ -107,7 +107,7 @@ export class PipelineStack extends cdk.Stack {
       adminPermissions: true,
     })    
 
-    pipeline.addStage({
+    const deployStage = pipeline.addStage({
       stageName: 'Deploy',
       actions: [usersServiceAction, notificationsServiceAction],
     })
@@ -121,5 +121,7 @@ export class PipelineStack extends cdk.Stack {
         message: events.RuleTargetInput.fromText(`Pipeline ${eventPipeline} changed state to ${eventState}`),
       })
     })
+    
+    
   }
 }
